@@ -270,7 +270,7 @@ def clear_graph_data():
 
 st.title('With Honor - Graphical Analysis')
 
-tab1, tab2, tab3 = st.tabs(["Settings & Documentation", "Data Consolidation", "Graphing"])
+tab1, tab2, tab3, tab4 = st.tabs(["Settings", "Data Consolidation", "Graphing", "Documentation"])
 
 with tab1:
     if 'settings' not in st.session_state:
@@ -547,3 +547,9 @@ with tab3:
                     mime='text/csv'
                 )
 
+with tab4:
+    st.markdown("""
+        ### App Documentation
+        For detailed documentation on the app, please refer to the following document:
+        [View App Documentation](https://docs.google.com/document/d/1wFJXC0VKODcpYaiuMd54VpnZGmC164FQqQeaIEULj_s/edit#heading=h.qsujw3fkoz4m)
+    """)
