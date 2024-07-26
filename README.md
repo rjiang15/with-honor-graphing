@@ -25,9 +25,3 @@ For more detailed instructions and examples, please refer to the full documentat
 2. **Data Processing**: The tool consolidates the information to generate detailed graphs and statistics.
 3. **Generate Visualizations**: Create interactive network graphs to illustrate voting similarities among representatives.
 4. **Export Visuals**: Export the generated graphs as PNG images for effective communication of findings.
-
-## Conclusion
-
-This tool provides a comprehensive approach to analyzing voting patterns and collaboration within the U.S. Congress, using data visualization and network analysis to offer clear insights into cross-party voting behaviors and bipartisan cooperation.
-
-For more detailed instructions and examples, please refer to the full documentation provided in the repository and the [Google Docs guide](https://docs.google.com/document/d/1wFJXC0VKODcpYaiuMd54VpnZGmC164FQqQeaIEULj_s/edit).
