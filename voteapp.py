@@ -276,24 +276,24 @@ with tab1:
             'dem_color': "#003862",
             'rep_color': "#C00000",
             'background_color': "#ffffff",
-            'node_border_color': "#000000",
-            'drop_bills': False,
-            'cpc_threshold': "0.5",
+            'node_border_color': "#504D4D",
+            'drop_bills': True,
+            'cpc_threshold': "0.4",
             'within_party_threshold': "0.75",
-            'edge_width': "0.05",
-            'edge_color': '#000000',
-            'node_border_width': "1"
+            'edge_width': "0.025",
+            'edge_color': '#D28DD2',
+            'node_border_width': "0.5"
         }
 
     st.session_state.settings['dem_color'] = st.color_picker("Pick a color to represent Democrats on the Graph (Default = #003862)", st.session_state.settings['dem_color'])
     st.session_state.settings['rep_color'] = st.color_picker("Pick a color to represent Republicans on the Graph (Default = #C00000)", st.session_state.settings['rep_color'])
     st.session_state.settings['background_color'] = st.color_picker("Pick a color for the background of the graph (Default = #ffffff)", st.session_state.settings['background_color'])
-    st.session_state.settings['node_border_color'] = st.color_picker("Pick a color for the node borders on the graphs (Default = #000000)", st.session_state.settings['node_border_color'])
-    st.session_state.settings['edge_width'] = st.text_input("Set edge width", st.session_state.settings['edge_width'])
-    st.session_state.settings['edge_color'] = st.color_picker("Pick a color for the edges of the graph", st.session_state.settings['edge_color'])
-    st.session_state.settings['node_border_width'] = st.text_input("Set node border width", st.session_state.settings['node_border_width'])
-    st.session_state.settings['drop_bills'] = st.checkbox("Drop bills above 90% yes/no voting?", st.session_state.settings['drop_bills'])
-    st.session_state.settings['cpc_threshold'] = st.text_input("Enter a value between 0 and 1 for CPC edge plotting threshold (Default = 0.5)", st.session_state.settings['cpc_threshold'])
+    st.session_state.settings['node_border_color'] = st.color_picker("Pick a color for the node borders on the graphs (Default = #504D4D)", st.session_state.settings['node_border_color'])
+    st.session_state.settings['edge_width'] = st.text_input("Set edge width (Default = 0.025)", st.session_state.settings['edge_width'])
+    st.session_state.settings['edge_color'] = st.color_picker("Pick a color for the edges of the graph (Defualt = #D28DD2)", st.session_state.settings['edge_color'])
+    st.session_state.settings['node_border_width'] = st.text_input("Set node border width (Default = 0.5)", st.session_state.settings['node_border_width'])
+    st.session_state.settings['drop_bills'] = st.checkbox("Drop bills above 90% yes/no voting? (Default = True)", st.session_state.settings['drop_bills'])
+    st.session_state.settings['cpc_threshold'] = st.text_input("Enter a value between 0 and 1 for CPC edge plotting threshold (Default = 0.4)", st.session_state.settings['cpc_threshold'])
     st.session_state.settings['within_party_threshold'] = st.text_input("Enter a value between 0 and 1 for within party edge plotting threshold (Default = 0.75)", st.session_state.settings['within_party_threshold'])
 
     try:
@@ -359,8 +359,8 @@ with tab2:
             st.data_editor(st.session_state.members_editable_data)
             if st.button('Clear Members Data'):
                 clear_members_data()
-                st.experimental_rerun()
-
+                st.experimental_set_query_params()
+        
         if 'votes_data' not in st.session_state:
             votes_file = st.file_uploader("Upload your year's votes.csv", type='csv')
             if votes_file is not None:
@@ -382,11 +382,11 @@ with tab2:
             st.data_editor(st.session_state.votes_editable_data)
             if st.button('Clear Votes Data'):
                 clear_votes_data()
-                st.experimental_rerun()
+                st.experimental_set_query_params()
 
         if st.button('Clear Merged Data'):
             clear_merged_data()
-            st.experimental_rerun()
+            st.experimental_set_query_params()
 
         if 'graphed' not in st.session_state:
             st.session_state.graphed = False
@@ -521,7 +521,7 @@ with tab3:
                                 highlight_node=selected_node
                             )
                             st.session_state.graph_highlighted = fig
-                            st.experimental_rerun()
+                            st.experimental_set_query_params()
 
                         # Display the neighbors list
                         if selected_name and selected_name != "No Congressperson Selected":
