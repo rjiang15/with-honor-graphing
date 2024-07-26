@@ -239,7 +239,7 @@ def display_node_statistics(G, selected_name):
 
     st.write(f"Top cross-party neighbors for '{selected_name}':")
     for nbr, weight in neighbors:
-        st.write(f"- {G.nodes[nbr]['bioname']} (Edge weight: {weight})")
+        st.write(f"- {G.nodes[nbr]['bioname']} (Number of times voted with selected Congressperson: {weight})")
 
 def clear_members_data():
     if 'members_data' in st.session_state:
