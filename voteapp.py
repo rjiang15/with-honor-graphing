@@ -316,9 +316,9 @@ with tab2:
             members_file = st.file_uploader("Upload your year's members.csv", type='csv')
             if members_file is not None:
                 members_data = load_data(members_file)
-                if not members_data.empty and members_data.iloc[0]['chamber'] == 'President':
-                    members_data = members_data.iloc[1:]
-                    st.info('Filtered out the president row from the data.')
+                if not members_data.empty:
+                    members_data = members_data[members_data['chamber'] != 'President']
+                    st.info('Filtered out all president rows from the data.')
 
                 for members_item in members_columns:
                     if members_item not in members_data.columns:
