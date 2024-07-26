@@ -96,7 +96,7 @@ def calculate_cross_party_roll_numbers(df, percentage):
     ).sum()
     return cross_party_count
 
-def plotCollaborationNetwork(filtered_cleaned_df, cpc_percent, within_party_percent, dem_color, rep_color, bg_color, border_color, highlight_node=None):
+def plotCollaborationNetwork(filtered_cleaned_df, cpc_percent, within_party_percent, dem_color, rep_color, bg_color, border_color, edge_width, edge_color, node_border_width, highlight_node=None):
     congress_number = filtered_cleaned_df['congress'].iloc[0]
     congress_name = filtered_cleaned_df['chamber'].iloc[0]
     cross_party_threshold = len(filtered_cleaned_df['rollnumber'].unique()) * cpc_percent
@@ -128,7 +128,6 @@ def plotCollaborationNetwork(filtered_cleaned_df, cpc_percent, within_party_perc
                 else:
                     G.add_edge(icpsr_list[i], icpsr_list[j], weight=1)
 
-    # Keep all edges in G, but mark those that do not meet the threshold for plotting
     edges_to_plot = []
     for u, v, d in G.edges(data=True):
         if (G.nodes[u]['party'] != G.nodes[v]['party'] and d['weight'] >= cross_party_threshold) or \
@@ -157,7 +156,7 @@ def plotCollaborationNetwork(filtered_cleaned_df, cpc_percent, within_party_perc
 
     edge_trace = go.Scatter(
         x=edge_x, y=edge_y,
-        line=dict(width=0.1, color='black'),
+        line=dict(width=edge_width, color=edge_color),
         hoverinfo='none',
         mode='lines')
 
@@ -170,7 +169,7 @@ def plotCollaborationNetwork(filtered_cleaned_df, cpc_percent, within_party_perc
             showscale=False,
             color=node_colors,
             size=10,
-            line=dict(color=border_color, width=1)))
+            line=dict(color=border_color, width=node_border_width)))
 
     fig = go.Figure(data=[edge_trace, node_trace],
                     layout=go.Layout(
@@ -193,7 +192,6 @@ def plotCollaborationNetwork(filtered_cleaned_df, cpc_percent, within_party_perc
                         paper_bgcolor=bg_color,
                         plot_bgcolor=bg_color))
 
-    # Add highlighted node trace last to bring it to the foreground
     if highlight_node is not None:
         highlighted_node_trace = go.Scatter(
             x=[positions[highlight_node][0]],
@@ -281,13 +279,19 @@ with tab1:
             'node_border_color': "#000000",
             'drop_bills': False,
             'cpc_threshold': "0.5",
-            'within_party_threshold': "0.75"
+            'within_party_threshold': "0.75",
+            'edge_width': "0.05",
+            'edge_color': '#000000',
+            'node_border_width': "1"
         }
 
     st.session_state.settings['dem_color'] = st.color_picker("Pick a color to represent Democrats on the Graph (Default = #003862)", st.session_state.settings['dem_color'])
     st.session_state.settings['rep_color'] = st.color_picker("Pick a color to represent Republicans on the Graph (Default = #C00000)", st.session_state.settings['rep_color'])
     st.session_state.settings['background_color'] = st.color_picker("Pick a color for the background of the graph (Default = #ffffff)", st.session_state.settings['background_color'])
     st.session_state.settings['node_border_color'] = st.color_picker("Pick a color for the node borders on the graphs (Default = #000000)", st.session_state.settings['node_border_color'])
+    st.session_state.settings['edge_width'] = st.text_input("Set edge width", st.session_state.settings['edge_width'])
+    st.session_state.settings['edge_color'] = st.color_picker("Pick a color for the edges of the graph", st.session_state.settings['edge_color'])
+    st.session_state.settings['node_border_width'] = st.text_input("Set node border width", st.session_state.settings['node_border_width'])
     st.session_state.settings['drop_bills'] = st.checkbox("Drop bills above 90% yes/no voting?", st.session_state.settings['drop_bills'])
     st.session_state.settings['cpc_threshold'] = st.text_input("Enter a value between 0 and 1 for CPC edge plotting threshold (Default = 0.5)", st.session_state.settings['cpc_threshold'])
     st.session_state.settings['within_party_threshold'] = st.text_input("Enter a value between 0 and 1 for within party edge plotting threshold (Default = 0.75)", st.session_state.settings['within_party_threshold'])
@@ -309,6 +313,24 @@ with tab1:
             st.error("Error: The within party threshold value must be between 0 and 1.")
     except ValueError:
         st.error("Error: The within party threshold must be a numeric value between 0 and 1.")
+    
+    try:
+        numeric_value = float(st.session_state.settings['edge_width'])
+        if 0.01 <= numeric_value <= 2.0:
+            st.success(f"Valid edge width input: {st.session_state.settings['edge_width']}")
+        else:
+            st.error("Error: The edge width input must be between 0.01 and 2.0.")
+    except ValueError:
+        st.error("Error: The edge width input must be a numeric value between 0.01 and 2.0.")
+    
+    try:
+        numeric_value = float(st.session_state.settings['node_border_width'])
+        if 0.1 <= numeric_value <= 5.0:
+            st.success(f"Valid node border width input: {st.session_state.settings['node_border_width']}")
+        else:
+            st.error("Error: The node border width input must be between 0.1 and 5.0.")
+    except ValueError:
+        st.error("Error: The node border width input must be a numeric value between 0.1 and 5.0.")
 
 with tab2:
     with st.spinner('Initializing...'):
@@ -411,7 +433,10 @@ with tab3:
                             st.session_state.settings['dem_color'], 
                             st.session_state.settings['rep_color'], 
                             st.session_state.settings['background_color'], 
-                            st.session_state.settings['node_border_color']
+                            st.session_state.settings['node_border_color'],
+                            float(st.session_state.settings['edge_width']),
+                            st.session_state.settings['edge_color'],
+                            float(st.session_state.settings['node_border_width'])
                         )
                         st.session_state.graph = fig
                         st.session_state.G = G
@@ -433,7 +458,10 @@ with tab3:
                             st.session_state.settings['dem_color'], 
                             st.session_state.settings['rep_color'], 
                             st.session_state.settings['background_color'], 
-                            st.session_state.settings['node_border_color'], 
+                            st.session_state.settings['node_border_color'],
+                            float(st.session_state.settings['edge_width']),
+                            st.session_state.settings['edge_color'],
+                            float(st.session_state.settings['node_border_width']),
                             highlight_node=selected_node
                         )
                         st.session_state.graph_highlighted = fig_highlighted
@@ -486,7 +514,10 @@ with tab3:
                                 st.session_state.settings['dem_color'], 
                                 st.session_state.settings['rep_color'], 
                                 st.session_state.settings['background_color'], 
-                                st.session_state.settings['node_border_color'], 
+                                st.session_state.settings['node_border_color'],
+                                float(st.session_state.settings['edge_width']),
+                                st.session_state.settings['edge_color'],
+                                float(st.session_state.settings['node_border_width']),
                                 highlight_node=selected_node
                             )
                             st.session_state.graph_highlighted = fig
