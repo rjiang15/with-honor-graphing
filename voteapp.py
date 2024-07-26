@@ -157,7 +157,7 @@ def plotCollaborationNetwork(filtered_cleaned_df, cpc_percent, within_party_perc
 
     edge_trace = go.Scatter(
         x=edge_x, y=edge_y,
-        line=dict(width=0.05, color='grey'),
+        line=dict(width=0.1, color='black'),
         hoverinfo='none',
         mode='lines')
 
@@ -170,7 +170,7 @@ def plotCollaborationNetwork(filtered_cleaned_df, cpc_percent, within_party_perc
             showscale=False,
             color=node_colors,
             size=10,
-            line=dict(color=border_color, width=2)))
+            line=dict(color=border_color, width=1)))
 
     fig = go.Figure(data=[edge_trace, node_trace],
                     layout=go.Layout(
@@ -552,4 +552,6 @@ with tab4:
         ### App Documentation
         For detailed documentation on the app, please refer to the following document:
         [View App Documentation](https://docs.google.com/document/d/1wFJXC0VKODcpYaiuMd54VpnZGmC164FQqQeaIEULj_s/edit#heading=h.qsujw3fkoz4m)
+                
+        —Happy Analysis, Ryan Jiang
     """)
