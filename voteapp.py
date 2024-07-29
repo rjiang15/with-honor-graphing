@@ -359,7 +359,7 @@ with tab2:
             st.data_editor(st.session_state.members_editable_data)
             if st.button('Clear Members Data'):
                 clear_members_data()
-                st.experimental_set_query_params()
+                st.query_params()  # Updated line here
         
         if 'votes_data' not in st.session_state:
             votes_file = st.file_uploader("Upload your year's votes.csv", type='csv')
@@ -382,11 +382,11 @@ with tab2:
             st.data_editor(st.session_state.votes_editable_data)
             if st.button('Clear Votes Data'):
                 clear_votes_data()
-                st.experimental_set_query_params()
+                st.query_params()  # Updated line here
 
         if st.button('Clear Merged Data'):
             clear_merged_data()
-            st.experimental_set_query_params()
+            st.query_params()  # Updated line here
 
         if 'graphed' not in st.session_state:
             st.session_state.graphed = False
@@ -521,7 +521,7 @@ with tab3:
                                 highlight_node=selected_node
                             )
                             st.session_state.graph_highlighted = fig
-                            st.experimental_set_query_params()
+                            st.query_params()  # Updated line here
 
                         # Display the neighbors list
                         if selected_name and selected_name != "No Congressperson Selected":
