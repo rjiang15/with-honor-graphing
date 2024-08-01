@@ -281,7 +281,7 @@ with tab1:
             'cpc_threshold': "0.4",
             'within_party_threshold': "0.75",
             'edge_width': "0.025",
-            'edge_color': '#D28DD2',
+            'edge_color': '#414141',
             'node_border_width': "0.5"
         }
 
