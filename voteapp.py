@@ -290,7 +290,7 @@ with tab1:
     st.session_state.settings['background_color'] = st.color_picker("Pick a color for the background of the graph (Default = #ffffff)", st.session_state.settings['background_color'])
     st.session_state.settings['node_border_color'] = st.color_picker("Pick a color for the node borders on the graphs (Default = #504D4D)", st.session_state.settings['node_border_color'])
     st.session_state.settings['edge_width'] = st.text_input("Set edge width (Default = 0.025)", st.session_state.settings['edge_width'])
-    st.session_state.settings['edge_color'] = st.color_picker("Pick a color for the edges of the graph (Defualt = #D28DD2)", st.session_state.settings['edge_color'])
+    st.session_state.settings['edge_color'] = st.color_picker("Pick a color for the edges of the graph (Defualt = #414141)", st.session_state.settings['edge_color'])
     st.session_state.settings['node_border_width'] = st.text_input("Set node border width (Default = 0.5)", st.session_state.settings['node_border_width'])
     st.session_state.settings['drop_bills'] = st.checkbox("Drop bills above 90% yes/no voting? (Default = True)", st.session_state.settings['drop_bills'])
     st.session_state.settings['cpc_threshold'] = st.text_input("Enter a value between 0 and 1 for CPC edge plotting threshold (Default = 0.4)", st.session_state.settings['cpc_threshold'])
